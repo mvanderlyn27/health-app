@@ -1,51 +1,80 @@
+/* IMPORTS */
 const express = require('express');
 const router = express.Router();
-const asyncHandler = require('express-async-handler');
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const key = 'health is a gift';
 
+
+/* HELPER FUNCTIONS */
+const authenticateJWT = (req,res,next)=>{
+    console.log("authorizing");
+    const authHeader = req.headers.authorization
+    if(authHeader){
+        const token = authHeader.split(' ')[1];
+        jwt.verify(token,key,function(err,user){
+            if(err || !user){
+                 res.status(400).send({
+                    message: "Error: not logged in, please login again"
+                });
+            }
+            else{
+            req.user = user;
+            next();
+            }
+        });
+    }
+    else{
+        res.sendStatus(401);
+    }
+
+}
 
 /* REST Endpoints */
-router.post('/login', asyncHandler(async function(req,res,next){
+router.post('/login', async function(req,res,next){
     console.log('login req');
-    User.findOne({username:req.body.uname}, function(err,user){
-        if(err){
-            throw(err);
-        }
-        else if(!user){
-            let error = new Error("wrong username");
-            error.status = 401;
-            next(error);
-        }
-        else{
-            user.authenticate(req.body.pword, function(err, isMatch){
-                if(err){
-                    throw(err);
-                }
-                if(isMatch){
-                    console.log('successful login', isMatch);
-                    req.sessionId = user._id;
-                    res.send(user);
-                }
-                else{
-                    next('wrong user/pass');
-                }
-            });
-        }
-    });
-}));
+    let user = await User.findOne({username:req.body.uname});
+    if(!user){
+        return res.status(400).send({
+            message: "Error: Username incorrect"
+        });
+    }
+    var result = await user.authenticate(req.body.pword, next);
+    if(!result){
+        return res.status(400).send({
+            message: "Error: Username/Password incorrect"
+        });
+    }
+    console.log();
+    let token = jwt.sign(user.toJSON(),key,{ expiresIn: '1h' });
+    res.json(token);
+});
 
-router.post('/signup', asyncHandler(async function(req,res){
+router.post('/signup', async function(req,res){
     console.log('signing up');
-    const new_user = new User({username:req.body.uname,email:req.body.email,password:req.body.pword});
-    const ret = await new_user.save();
-    req.session.userId = new_user._id;
-    res.json(ret);
-}));
+    if(!req.body || !req.body.uname || !req.body.email || !req.body.pword){
+        return res.status(400).send({
+            message: "Error: Need to fill out all required fields"
+        });
+    }
+    const user_data = new User({username:req.body.uname,email:req.body.email,password:req.body.pword});
+    const new_user = await user_data.save();
+    let token = jwt.sign(new_user.toJSON(),key,{ expiresIn: '1h' });
+    res.json(token);
+});
+router.get('/workouts', authenticateJWT, function(req, res){
+    //access user with req.user
+    console.log('fetching workouts');
+    res.send("auth worked"); 
+});
 
+/*
+// logout needs to be handled on front end, remove token from local storage
 router.get('/logout', asyncHandler(async function (req,res,next){
     if(req.session){
         await req.session.destroy();
         return res.redirect('/');
     }
 }));
+*/
 module.exports = router;

@@ -15,7 +15,7 @@ const authenticateJWT = (req,res,next)=>{
         jwt.verify(token,key,function(err,user){
             if(err || !user){
                  res.status(400).send({
-                    message: "Error: not logged in, please login again"
+                    message: "Error: Failed authorizing, please login again"
                 });
             }
             else{
@@ -25,7 +25,9 @@ const authenticateJWT = (req,res,next)=>{
         });
     }
     else{
-        res.sendStatus(401);
+        res.status(401).send({
+            message: "Error: Not logged in, please login again"
+        });
     }
 
 }
@@ -47,7 +49,7 @@ router.post('/login', async function(req,res,next){
     }
     console.log();
     let token = jwt.sign(user.toJSON(),key,{ expiresIn: '1h' });
-    res.json(token);
+    return res.json(token);
 });
 
 router.post('/signup', async function(req,res){
@@ -60,13 +62,16 @@ router.post('/signup', async function(req,res){
     const user_data = new User({username:req.body.uname,email:req.body.email,password:req.body.pword});
     const new_user = await user_data.save();
     let token = jwt.sign(new_user.toJSON(),key,{ expiresIn: '1h' });
-    res.json(token);
+    return res.json(token);
 });
 router.get('/workouts', authenticateJWT, function(req, res){
     //access user with req.user
     console.log('fetching workouts');
     res.send("auth worked"); 
 });
+router.get('/',function (req,res){
+    res.send("hello world");
+})
 
 /*
 // logout needs to be handled on front end, remove token from local storage

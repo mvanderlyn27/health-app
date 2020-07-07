@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const session = require ('express-session');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/'+process.env.USERDB, {useNewUrlParser: true, useUnifiedTopology: true});
-const routes = require ('./routes/router');
+mongoose.connect('mongodb://mongo:27017/'+process.env.USERDB, {useNewUrlParser: true, useUnifiedTopology: true});
+const routes = require ('./src/routes/router');
 /* Sets up express middleware */
 var upload = multer();
 var app = express();

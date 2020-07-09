@@ -1,16 +1,18 @@
 # HEALTH APP TODO LIST
 ## Initial things to do
 * implement docker for backend(DONE)
-* figure out if docker mongo data persists or not(done)
 * create mvp feature/requirement list (done)
-* make backend in SQL(postgres)
-* Make ER Diagram into some digital form
-* Convert ER to Relational
+* Make ER Diagram into some digital form(done)
+* make backend in SQL(postgres)(partially done)
+  * need to make all models for entities
+  * need to create services for all business logic related to entities
+  * need to test to make sure all that works
 * create endpoints/schemas needed for backend
 * test endpoints
 * make mockups for project frontend
 * implement mockups for frontend in react/redux
 * implement unit testing for frontend/backend
+  * https://jestjs.io/
 * make whole project launch from one docker-compose
 
 ## Future ideas

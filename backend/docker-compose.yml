@@ -1,12 +1,18 @@
 version: "2"
 services:
- web:
-    build: .
-    ports: 
-     - "8080:8080"
-    depends_on: 
-        - mongo
- mongo:
-    image: "mongo"
-    ports: 
-     - "27017:27017"
+   web:
+      build: ./src
+      ports: 
+         - "${REST_PORT}:${REST_PORT}"
+      command: bash -c 'while !</dev/tcp/postgres/${DB_PORT}; do sleep 1; done; npm start'
+      depends_on: 
+         - postgres
+   postgres:
+      image: postgres
+      restart: always
+      ports: 
+         - "${DB_PORT}:${DB_PORT}"
+      environment: 
+         - POSTGRES_USER=${DB_USER} 
+         - POSTGRES_PASSWORD=${DB_PASS}
+         - POSTGRES_DB=${DB_NAME}

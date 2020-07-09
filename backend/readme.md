@@ -1,8 +1,9 @@
 # Readme
 ## General info
-* rest api & mongo db in  docker containers
+* rest api & postgres db in  docker containers
 ## Startup Script
 * docker-compose build
 * docker-compose up
 ## Port 
-* rest api runs on port 8080 
+* rest api runs on port 8000 
+* postgres runs on 5432

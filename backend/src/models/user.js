@@ -1,6 +1,25 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const userSchema = new mongoose.Schema({
+const sequalize = require('sequalize');
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = new Sequelize('sqlite::memory:');
+const User = sequelize.define('User', {
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    pword: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+
+});
+/*const userSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
@@ -32,4 +51,4 @@ userSchema.pre('save', async function (next){
 });
 
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = User;*/

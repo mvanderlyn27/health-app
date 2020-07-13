@@ -1,12 +1,14 @@
 version: "2"
 services:
    web:
-      build: ./src
+      build: ./
+      volumes:
+         - ".:/app:rw"
       ports: 
          - "${REST_PORT}:${REST_PORT}"
       command: bash -c 'while !</dev/tcp/postgres/${DB_PORT}; do sleep 1; done; npm start'
       depends_on: 
-         - postgres
+         - postgres 
    postgres:
       image: postgres
       restart: always

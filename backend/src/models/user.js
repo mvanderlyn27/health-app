@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
-const sequalize = require('sequalize');
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
-const User = sequelize.define('User', {
+const { Sequelize, DataTypes, Model } = require('sequelize');
+const {db} = require('../database');
+const User = db.define('User', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -11,44 +10,28 @@ const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        isEmail: true
     },
-    pword: {
+    password: {
         type: DataTypes.STRING,
         allowNull: false
-    }
-
-});
-/*const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        unique: true,
-        required: true,
-        trim: true
     },
-    email: {
-        type:String,
-        unique: true,
-        required: true,
-        trim: true
-    },
-    password:{ 
-        type: String,
-        required: true
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
+    },{
+        hooks:{
+            beforeCreate: hashPass,
+            beforeUpdate: hashPass         
+        }
+    });
+    User.prototype.authPassword = async function(pword){
+            return await bcrypt.compare(pword, this.password);
     }
-});
-userSchema.methods.authenticate = async function (pword) {
-    const match = await bcrypt.compare(pword, this.password);
-    return match;
-}
-
-//hashes users pword before saving
-userSchema.pre('save', async function (next){
-    var user = this;
-    const hash = await bcrypt.hash(user.password, 10)
-    user.password = hash;
-    next();
-});
-
-const User = mongoose.model('User', userSchema);
-module.exports = User;*/
+async function hashPass(user){
+    if (!user.changed('password')) return;
+        const salt = await bcrypt.genSalt(12);
+        const hash = await bcrypt.hash(user.password, salt);
+        user.password = hash;
+    }
+module.exports = User;

@@ -7,7 +7,11 @@
   * figure out how to get docker volumes working (auto compiles with nodemon)
   * get migrations setup (done)
   * look into auto-migrations
-  * need to make all models for entities
+    * having weird issues with this
+  * need to make all models for entities (done)
+  * need to setup migrations
+  * migrate db
+  * create all associations
 * implement ts 
 * create endpoints/schemas needed for backend
   * need to create services for all business logic related to entities

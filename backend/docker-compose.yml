@@ -3,10 +3,10 @@ services:
    web:
       build: ./
       volumes:
-         - ".:/app:rw"
+         - "./src:/src:rw"
       ports: 
          - "${REST_PORT}:${REST_PORT}"
-      command: bash -c 'while !</dev/tcp/postgres/${DB_PORT}; do sleep 1; done; npm start'
+      command: bash -c 'while !</dev/tcp/postgres/${DB_PORT}; do sleep 1; done; npm run dev'
       depends_on: 
          - postgres 
    postgres:

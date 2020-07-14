@@ -4,13 +4,13 @@
 * create mvp feature/requirement list (done)
 * Make ER Diagram into some digital form(done)
 * make backend in SQL(postgres)(partially done)
+  * figure out how to get docker volumes working (auto compiles with nodemon)
   * get migrations setup (done)
-  * figure out how to get docker volumes working
+  * look into auto-migrations
   * need to make all models for entities
-  * implement ts 
-  * need to create services for all business logic related to entities
-  * need to test to make sure all that works
+* implement ts 
 * create endpoints/schemas needed for backend
+  * need to create services for all business logic related to entities
 * test endpoints
 * make mockups for project frontend
 * implement mockups for frontend in react/redux

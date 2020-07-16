@@ -8,8 +8,6 @@ const WorkoutPlan = db.define('WorkoutPlan', {
     date: { 
         type: DataTypes.DATE,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
         }

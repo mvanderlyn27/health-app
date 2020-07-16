@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const InputValidator = require('./input_validator');
-const {UserValidationError, DatabaseError, NotFoundError, UserExistingError} = require ('../middleware/middleware');
+const {UserValidationError, DatabaseError, NotFoundError, AlreadyExistingError} = require ('../middleware/errorHandling');
 const key = 'health is a gift';
 class UserService{
     static authenticateJWT(authHeader){
@@ -20,7 +20,7 @@ class UserService{
         InputValidator.validateUserSignupAndLoginInput(user_info,true);
         let new_user = await User.create(user_info);
         if(!new_user){
-            throw new UserExistingError("User already exists, please change username");
+            throw new AlreadyExistingError("User already exists, please change username");
         }
         let token = jwt.sign(new_user.toJSON(),key,{expiresIn:'1h'});
         return token;
@@ -33,7 +33,9 @@ class UserService{
         if(!user){
             throw new NotFoundError("User does not exist");
         }
-        await user.authPassword(user_info.password);
+        if(!(await user.authPassword(user_info.password))){
+            throw new UserValidationError('Wrong Password, please try again');
+        }
         let token = jwt.sign(user.toJSON(),key,{ expiresIn: '1h' });
         return token;
    }

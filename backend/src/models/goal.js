@@ -43,8 +43,6 @@ const Goal = db.define('Goal', {
             this.setDataValue('value', JSON.stringify(value));
         },
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
         }

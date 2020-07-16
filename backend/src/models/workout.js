@@ -8,8 +8,6 @@ const User = db.define('User', {
     //seconds
     //date workouts scheduled for
     date: DataTypes.DATE,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
         }

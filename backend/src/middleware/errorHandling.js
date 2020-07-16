@@ -57,8 +57,8 @@ class NotFoundError extends Error {
     }
 }
 //already exists
-function userExistingErrorHandler(error, req, res, next) {
-  if (error instanceof UserExistingError) {
+function alreadyExistingErrorHandler(error, req, res, next) {
+  if (error instanceof AlreadyExistingError) {
     return res.status(HttpStatus.CONFLICT).send({
       httpStatus: HttpStatus.CONFLICT,
       message: error.message,
@@ -67,10 +67,10 @@ function userExistingErrorHandler(error, req, res, next) {
   }
   next(error);
 }
-class UserExistingError extends Error {
+class AlreadyExistingError extends Error {
     constructor(message) {
         super(message);
-        this.name = 'ValidationError'
+        this.name = 'AlreadyExistingError'
     }
 }
 //postgres error
@@ -131,24 +131,12 @@ function defaultErrorHandler(error, req, res, next) {
     });
   }
 }
-//router middleware
-function protectRoute(req,res,next){
-    console.log("authorizing");
-        let user = UserService.authenticateJWT(req.headers.authorization);
-        if(user){
-            req.user = user;
-            next();
-        }
-    else{
-        throw new UnauthorizedUserError('Please login/signup');
-    }
-}
 module.exports = {
     userAuthErrorHandler, UserValidationError,
     inputValidationErrorHandler,InputValidationError,
     notFoundErrorHandler, NotFoundError,
-    userExistingErrorHandler, UserExistingError,
+    alreadyExistingErrorHandler, AlreadyExistingError,
     databaseErrorHandler, DatabaseError,
     unauthorizedUserErrorHandler, UnauthorizedUserError,
-    defaultErrorHandler, protectRoute,
+    defaultErrorHandler, 
 }

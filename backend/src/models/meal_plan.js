@@ -6,8 +6,6 @@ const MealPlan = db.define('MealPlan', {
         allowNull: false,
         unique: true
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
         }

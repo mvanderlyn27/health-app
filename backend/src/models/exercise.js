@@ -29,8 +29,6 @@ const Exercise = db.define('Exercise', {
         }
     },
     comments: DataTypes.STRING,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
         }

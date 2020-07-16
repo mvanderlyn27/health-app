@@ -25,8 +25,6 @@ const HealthLog= db.define('HealthLog', {
         type: DataTypes.Integer,
         min:1
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
         }

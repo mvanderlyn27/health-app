@@ -17,8 +17,6 @@ const User = db.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
             beforeCreate: hashPass,

@@ -1,3 +1,5 @@
+const {ValidationError} = require('../middleware/errorHandling');
+
 module.exports = class InputValidator {
 //takes in json user_info object, and signup bool, if true then function
 //validates object for signup function in the user service
@@ -20,9 +22,40 @@ module.exports = class InputValidator {
       throw new ValidationError('The signup info you submitted is not valid', validationErrorMessages);
     }
   }
-static validateUserAuth(auth){
-  if(!auth){
-      throw new ValidationError('No JWT sent with request',[]);
+  static validateUserAuth(auth){
+    if(!auth){
+        throw new ValidationError('No JWT sent with request',[]);
+    }
   }
-}
+  static validateDishCreation(dish_info){
+    let validationErrorMessages = [];
+    if(!dish_info.name){
+      validationErrorMessages.push("Missing dish name");
+    }
+    if(!dish_info.calories){
+      validationErrorMessages.push("Missing dish's calories");
+    }
+    if(!dish_info.macros){
+      validationErrorMessages.push("Missing dish's macros");
+    }
+    if(dish_info.nutrients){
+      if(!(dish_update.constructor===({}).constructor)) {
+        throw new ValidationError('Need JSON object as input for nutrients', []); 
+      }
+    }
+    if(dish_info.dietary_restrictions){
+      if(!(dish_update.constructor===({}).constructor)) {
+        throw new ValidationError('Need JSON object as input for dietary restrictions', []); 
+      }
+    }
+    if(validationErrorMessages.length > 0){
+      throw new ValidationError('The dish info you submitted is not valid: ', validationErrorMessages);
+    }
+  }
+  //not sure if we need to validate correct keys here, or in database
+  static validateDishUpdate(dish_update){
+    if(!(dish_update.constructor===({}).constructor)) {
+      throw new ValidationError('Need JSON object as input for updates', []); 
+    }
+  }
 }

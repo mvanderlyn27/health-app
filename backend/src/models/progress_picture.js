@@ -11,8 +11,6 @@ const User = db.define('User', {
     bodyPosition: {
         type: DataTypes.STRING,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
     },{
         hooks:{
         }

@@ -40,12 +40,12 @@ module.exports = class InputValidator {
     }
     if(dish_info.nutrients){
       if(!(dish_update.constructor===({}).constructor)) {
-        throw new ValidationError('Need JSON object as input for nutrients', []); 
+        validationErrorMessages.push('Need JSON object as input for nutrients', []); 
       }
     }
     if(dish_info.dietary_restrictions){
       if(!(dish_update.constructor===({}).constructor)) {
-        throw new ValidationError('Need JSON object as input for dietary restrictions', []); 
+        validationErrorMessages.push('Need JSON object as input for dietary restrictions', []); 
       }
     }
     if(validationErrorMessages.length > 0){
@@ -56,6 +56,29 @@ module.exports = class InputValidator {
   static validateDishUpdate(dish_update){
     if(!(dish_update.constructor===({}).constructor)) {
       throw new ValidationError('Need JSON object as input for updates', []); 
+    }
+  }
+  static validateExerciseCreation(exercise_info){
+    let validationErrorMessages = [];
+    if(!exercise_info.name){
+      validationErrorMessages.push("Need name for exercise")
+    }
+    if(!exercise_info.type){
+      validationErrorMessages.push("Need type for exercise")
+    }
+    if(!exercise_info.bodyPartWorked){
+      validationErrorMessages.push("Need a body part worked");
+    }
+    if(!(exercise_info.exercise_info.constructor === ({}).constructor)){
+      validationErrorMessages.push("exercise info must be a json");
+    }
+    if(validationErrorMessages.length > 0){
+      throw new ValidationError('The exercise info you submitted is not valid: ', validationErrorMessages);
+    }
+  }
+  static validateExerciseSearch(body_parts){
+    if(!Array.isArray(body_parts)){
+      throw new ValidationError("body parts needs to be an array", []);
     }
   }
 }

@@ -1,6 +1,7 @@
 /* IMPORTS */
 const UserService = require('../services/user_service');
 const DishService = require('../services/dish_service');
+const ExercisesService = require('../services/exercise_service');
 const express = require('express');
 const {protectRoute} = require('./helper');
 const router = express.Router();
@@ -63,11 +64,46 @@ router.post('/dish/delete', async function (req,res){
 });
 
 //Exercise section
-router.get('/workouts', protectRoute, function(req, res){
+router.post('/exercise/create', async function (req,res){
+    console.log('creating exercise');
+    let dish = await ExerciseService.create_exercises(req.body);
+    return res.json(dish.toJSON());
+});
+router.post('/exercise/update', async function (req,res){
+    console.log('updating exercise');
+    let dishes = await ExerciseService.update_exercises(req.body);
+    console.log('successful update');
+    //might need to turn into JSON not sure yet
+    return res.json(dishes);
+});
+router.get('/exercise/find', async function (req,res){
+    console.log('getting exercise by ID');
+    let dishes = await ExerciseService.find_exercises(req.body);
+    //might need to turn into JSON not sure yet
+    return res.json(dishes);
+});
+router.get('/exercise/list', async function (req,res){
+    console.log('getting all exercise');
+    let dishes = await ExerciseService.list_exercises();
+    //might need to turn into JSON not sure yet
+    return res.json(dishes);
+});
+router.get('/exercise/search', async function (req,res){
+    console.log('searching exercise by name');
+    let dishes = await ExerciseService.search_exercises(req.body);
+    //might need to turn into JSON not sure yet
+    return res.json(dishes);
+});
+router.post('/exercise/delete', async function (req,res){
+    console.log('deleting exercise by ID');
+    await ExerciseService.delete_exercise(req.body);
+    return res.send(200);
+});
+/*router.get('/workouts', protectRoute, function(req, res){
     //access user with req.user
     console.log('fetching workouts');
     res.send("auth worked"); 
-});
+});*/
 
 router.get('/',function (req,res){
     res.send("hello world");

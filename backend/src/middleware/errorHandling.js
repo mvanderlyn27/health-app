@@ -3,14 +3,14 @@ const UserService = require('../services/user_service')
 
 //user auth 
 function userAuthErrorHandler(error, req, res, next) {
-    if (error instanceof UserValidationError) {
-      res.status(HttpStatus.UNAUTHORIZED);
-      return res.send({
-        httpStatus: HttpStatus.UNAUTHORIZED,
-        message: error.message
-      });
-    }
-    next(error);
+  if (error instanceof UserValidationError) {
+    res.status(HttpStatus.UNAUTHORIZED);
+    return res.send({
+      httpStatus: HttpStatus.UNAUTHORIZED,
+      message: error.message
+    });
+  }
+  next(error);
 }
 class UserValidationError extends Error {
   constructor(message) {
@@ -33,11 +33,11 @@ function inputValidationErrorHandler(error, request, response, next) {
 }
 
 class InputValidationError extends Error {
-    constructor(message, validationErrors) {
-        super(message);
-        this.validationErrors = validationErrors;
-        this.name = 'ValidationError'
-    }
+  constructor(message, validationErrors) {
+    super(message);
+    this.validationErrors = validationErrors;
+    this.name = 'ValidationError'
+  }
 }
 //not found
 function notFoundErrorHandler(error, req, res, next) {
@@ -51,10 +51,10 @@ function notFoundErrorHandler(error, req, res, next) {
   next(error);
 }
 class NotFoundError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = 'ValidationError'
-    }
+  constructor(message) {
+    super(message);
+    this.name = 'ValidationError'
+  }
 }
 //already exists
 function alreadyExistingErrorHandler(error, req, res, next) {
@@ -68,10 +68,10 @@ function alreadyExistingErrorHandler(error, req, res, next) {
   next(error);
 }
 class AlreadyExistingError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = 'AlreadyExistingError'
-    }
+  constructor(message) {
+    super(message);
+    this.name = 'AlreadyExistingError'
+  }
 }
 //postgres error
 function databaseErrorHandler(error, request, response, next) {
@@ -96,10 +96,10 @@ function databaseErrorHandler(error, request, response, next) {
 };
 
 class DatabaseError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = 'PostgresError'
-    }
+  constructor(message) {
+    super(message);
+    this.name = 'PostgresError'
+  }
 }
 //unauthorized error
 function unauthorizedUserErrorHandler(error, req, res, next) {
@@ -113,10 +113,10 @@ function unauthorizedUserErrorHandler(error, req, res, next) {
   next(error);
 }
 class UnauthorizedUserError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = 'Unauthorized User'
-    }
+  constructor(message) {
+    super(message);
+    this.name = 'Unauthorized User'
+  }
 }
 
 //default error catcher
@@ -132,11 +132,11 @@ function defaultErrorHandler(error, req, res, next) {
   }
 }
 module.exports = {
-    userAuthErrorHandler, UserValidationError,
-    inputValidationErrorHandler,InputValidationError,
-    notFoundErrorHandler, NotFoundError,
-    alreadyExistingErrorHandler, AlreadyExistingError,
-    databaseErrorHandler, DatabaseError,
-    unauthorizedUserErrorHandler, UnauthorizedUserError,
-    defaultErrorHandler, 
+  userAuthErrorHandler, UserValidationError,
+  inputValidationErrorHandler, InputValidationError,
+  notFoundErrorHandler, NotFoundError,
+  alreadyExistingErrorHandler, AlreadyExistingError,
+  databaseErrorHandler, DatabaseError,
+  unauthorizedUserErrorHandler, UnauthorizedUserError,
+  defaultErrorHandler,
 }

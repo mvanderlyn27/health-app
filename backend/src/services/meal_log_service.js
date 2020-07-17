@@ -1,10 +1,7 @@
-
-const User = require("../models/user");
-const jwt = require("jsonwebtoken");
+const MealLog = require("../models/meal_log");
 const InputValidator = require('./input_validator');
 const {UserValidationError, DatabaseError, NotFoundError, UserExistingError} = require ('../middleware/errorHandling');
-const key = 'health is a gift';
-class UserService{
-
+class MealLogService{
+   //need to think about what I need in here vs. what is available through association 
 }
-module.exports = UserService;
+module.exports = MealLogService;

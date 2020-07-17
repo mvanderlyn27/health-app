@@ -1,4 +1,3 @@
-
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const InputValidator = require('./input_validator');

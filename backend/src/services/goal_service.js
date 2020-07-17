@@ -6,7 +6,7 @@ class GoalService{
         InputValidator.validateGoalCreation(goal_info);        
         let goal = await Goal.create(goal_info);
         if(!goal){
-            throw new AlreadyExistingError("Exercise already exists"); 
+            throw new AlreadyExistingError("Goal already exists"); 
         }
         return goal;
     }
@@ -22,7 +22,7 @@ class GoalService{
         //not sure if this works, second condition needs to be true always
         let goals = await Goals.findAll({ where: { [Op.substring]: name } });
         if(!goals){
-            throw new NotFoundError("No exercises found with the search querry")
+            throw new NotFoundError("No goal found with the search querry")
         }
         return goals;
     } 

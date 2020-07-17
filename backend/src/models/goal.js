@@ -1,9 +1,9 @@
-const moment = require ('moment');
+const moment = require('moment');
 const { Sequelize, DataTypes, Model } = require('sequelize');
-const {db} = require('../database');
-const goal_type = ["body_fat_goal", "weight_goal", "muscle_gain_goal","strength_gain_goal","endurance_goal","health_improvement"];
-const strength_goal = ["goal_lift","goal_lift_weight","goal_sets","goal_reps"];
-const endurance_goal = ["goal_distance","goal_time","goal_incline","goal_level"];
+const { db } = require('../database');
+const goal_type = ["body_fat_goal", "weight_goal", "muscle_gain_goal", "strength_gain_goal", "endurance_goal", "health_improvement"];
+const strength_goal = ["goal_lift", "goal_lift_weight", "goal_sets", "goal_reps"];
+const endurance_goal = ["goal_distance", "goal_time", "goal_incline", "goal_level"];
 const Goal = db.define('Goal', {
     name: {
         type: DataTypes.STRING,
@@ -13,14 +13,14 @@ const Goal = db.define('Goal', {
     intensity: {
         type: DataTypes.STRING,
         notNull: false,
-        isIn: [['easy', 'medium','hard']]
+        isIn: [['easy', 'medium', 'hard']]
     },
     startDate: {
         type: DataTypes.DATEONLY,
         allowNull: false,
-        validate:{
-            notInPast(value){
-                if(moment(value).diff(moment(), 'days')<0){
+        validate: {
+            notInPast(value) {
+                if (moment(value).diff(moment(), 'days') < 0) {
                     throw new Error('Start date cant be before today')
                 }
             }
@@ -32,8 +32,8 @@ const Goal = db.define('Goal', {
         type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
-            customValidator(value){
-                if(moment(value).diff(moment(),'days')<=0){
+            checkEndDate(value) {
+                if (moment(value).diff(moment(), 'days') <= 0) {
                     throw new Error('End date needs to be after start date')
                 }
             }
@@ -43,22 +43,22 @@ const Goal = db.define('Goal', {
     goalInfo: {
         type: Sequelize.JSONB,
         allowNull: false,
-        validate:{
-            isGoalInfo(value){
-                Object.keys(value).forEach(function(key){
-                    if(!goal_type.includes(key)){
+        validate: {
+            isGoalInfo(value) {
+                Object.keys(value).forEach(function (key) {
+                    if (!goal_type.includes(key)) {
                         throw new Error("goal type not recognized");
                     }
-                    if(key==="strength_gain_goal"){
-                        Object.keys(value.key).forEach(function(key2){
-                            if(!strength_goal.includes(key2)){
+                    if (key === "strength_gain_goal") {
+                        Object.keys(value.key).forEach(function (key2) {
+                            if (!strength_goal.includes(key2)) {
                                 throw new Error("strength goal key type not recognized");
                             }
                         })
                     }
-                    else if(key==="endurance_increase_goal"){
-                        Object.keys(value.key).forEach(function(key2){
-                            if(!endurance_goal.includes(key2)){
+                    else if (key === "endurance_increase_goal") {
+                        Object.keys(value.key).forEach(function (key2) {
+                            if (!endurance_goal.includes(key2)) {
                                 throw new Error("endurance goal key type not recognized");
                             }
                         })
@@ -67,8 +67,8 @@ const Goal = db.define('Goal', {
             }
         }
     }
-    },{
-        hooks:{
-        }
-    });
+}, {
+    hooks: {
+    }
+});
 module.exports = Goal;

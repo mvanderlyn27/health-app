@@ -47,8 +47,10 @@ class UserService{
         }
         return users;
    }
+   //implement this
    static async delete_users(){
 
    }
+   // add more functions here about setting up all the things users can have
 }
 module.exports = UserService;

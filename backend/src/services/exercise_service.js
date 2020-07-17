@@ -60,7 +60,7 @@ class ExerciseService{
                 returning:true,
                 plain:true
             });
-            if(exercises[0] == 0){
+            if(output[0] == 0){
                 throw new NotFoundError("No exercises found with those ID's");
             }
             return true;

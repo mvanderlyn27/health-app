@@ -81,4 +81,64 @@ module.exports = class InputValidator {
       throw new ValidationError("body parts needs to be an array", []);
     }
   }
+  static validateGoalCreation(goal_data){
+    let validationErrorMessages = [];
+    if(!goal_data.name){
+      validationErrorMessages.push("Need name for goal")
+    }
+    if(!goal_data.intensity){
+      validationErrorMessages.push("Need intensity for goal")
+    }
+    if(!goal_data.startDate){
+      validationErrorMessages.push("Need a start date");
+    }
+    if(!goal_data.expectedEndDate){
+      validationErrorMessages.push("Need an expected end date");
+    }
+    if(!(goal_data.goal_info.constructor === ({}).constructor)){
+      validationErrorMessages.push("goal info must be a json");
+    }
+    if(validationErrorMessages.length > 0){
+      throw new ValidationError('The goal info you submitted is not valid: ', validationErrorMessages);
+    }
+  }
+  //might have an issue where not checking if update will make field null 
+  static validateGoalUpdate(updateInfo){
+    let validationErrorMessages = [];
+    Object.keys(updateInfo).forEach(function(key){
+    if(key==="name" && !updateInfo.key){
+      validationErrorMessages.push("name can't be null for goal")
+    }
+    if(key==="intensity"&& !updateInfo.key){
+      validationErrorMessages.push("intensity can't be null for goal")
+    }
+    if(key==="startDate"){
+      if(!updateInfo.key){
+      validationErrorMessages.push("start date can't be null for goal")
+      }
+      if(!goal_data.startDate instanceof Date){
+      validationErrorMessages.push("start date must be a date object");
+      }
+    }
+    if(key==="expectedEndDate"){
+      if(!updateInfo.key){
+      validationErrorMessages.push("start date can't be null for goal")
+      }
+      if(!(updateInfo.key instanceof Date)){
+      validationErrorMessages.push("expected end date can't be null");
+      }
+    }
+    if(key==="goal_info"){
+      if(!updateInfo.key){
+        validationErrorMessages.push("goal info can't be null for goal")
+      }
+      if(!(updateInfo.key.constructor === ({}).constructor)){
+        validationErrorMessages.push("goal info must be a json");
+      }
+    }
+    })
+    if(validationErrorMessages.length > 0){
+      throw new ValidationError('The goal info you submitted is not valid: ', validationErrorMessages);
+    }
+  }
 }
